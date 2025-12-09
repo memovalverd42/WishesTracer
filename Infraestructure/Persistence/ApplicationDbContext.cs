@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WishesTracer.Domain.Entities;
 
-namespace Infraestructure.Persistence;
+namespace WishesTracer.Infraestructure.Persistence;
 
 public class ApplicationDbContext : DbContext
 {

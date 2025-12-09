@@ -1,13 +1,17 @@
-﻿services:
-  wishestracer:
-    image: wishestracer
-    build:
-      context: .
-      dockerfile: WishesTracer/Dockerfile
+﻿name: wishes_tracer
 
-  domain:
-    image: domain
-    build:
-      context: .
-      dockerfile: Domain/Dockerfile
+services:
+    db:
+        image: postgres:15-alpine
+        container_name: wishes_tracer_db
+        environment:
+            - POSTGRES_DB=wishes_tracer
+            - POSTGRES_USER=wt_admin
+            - POSTGRES_PASSWORD=wt_@dm1n
+        ports:
+            - "5433:5432"
+        volumes:
+            - wishes_tracer_db_data:/var/lib/postgresql/data
 
+volumes:
+    wishes_tracer_db_data:

@@ -1,6 +1,6 @@
 using System.Globalization;
-using Application.DTOs;
 using HtmlAgilityPack;
+using WishesTracer.Application.DTOs;
 
 namespace Infraestructure.Scraper;
 

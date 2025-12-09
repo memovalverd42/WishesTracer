@@ -1,4 +1,4 @@
-namespace Domain.Entities;
+namespace WishesTracer.Domain.Entities;
 
 public class PriceHistory
 {

@@ -1,4 +1,3 @@
-using Application.Interfaces;
 using Infraestructure.Persistence;
 using Infraestructure.Scraper;
 using Infraestructure.Scraper.Core;
@@ -6,8 +5,9 @@ using Infraestructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WishesTracer.Application.Interfaces;
 
-namespace Infraestructure;
+namespace WishesTracer.Infraestructure;
 
 public static class DependencyInjection
 {

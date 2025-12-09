@@ -1,5 +1,5 @@
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using WishesTracer.Domain.Entities;
 
 namespace Infraestructure.Persistence;
 

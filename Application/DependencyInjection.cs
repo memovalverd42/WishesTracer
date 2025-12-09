@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application;
+namespace WishesTracer.Application;
 
 public static class DependencyInjection
 {

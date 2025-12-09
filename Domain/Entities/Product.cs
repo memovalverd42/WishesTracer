@@ -1,4 +1,4 @@
-namespace Domain.Entities;
+namespace WishesTracer.Domain.Entities;
 
 public class Product
 {
@@ -43,7 +43,7 @@ public class Product
         // Si el precio cambió, agregamos al historial
         if (CurrentPrice != newPrice && newPrice > 0)
         {
-            _priceHistory.Add(new Entities.PriceHistory(Id, CurrentPrice, DateTime.UtcNow));
+            _priceHistory.Add(new PriceHistory(Id, CurrentPrice, DateTime.UtcNow));
         }
 
         CurrentPrice = newPrice;

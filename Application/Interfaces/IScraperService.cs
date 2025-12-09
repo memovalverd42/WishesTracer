@@ -1,6 +1,6 @@
-using Application.DTOs;
+using WishesTracer.Application.DTOs;
 
-namespace Application.Interfaces;
+namespace WishesTracer.Application.Interfaces;
 
 
 public interface IScraperService

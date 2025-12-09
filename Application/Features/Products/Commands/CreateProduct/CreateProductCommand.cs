@@ -1,10 +1,10 @@
-using Application.DTOs;
-using Application.Interfaces;
-using Domain.Entities;
-using Domain.Interfaces;
 using MediatR;
+using WishesTracer.Application.DTOs;
+using WishesTracer.Application.Interfaces;
+using WishesTracer.Domain.Entities;
+using WishesTracer.Domain.Interfaces;
 
-namespace Application.Features.Products.Commands.CreateProduct;
+namespace WishesTracer.Application.Features.Products.Commands.CreateProduct;
 
 public record CreateProductCommand(string Url) : IRequest<ProductDto>;
 

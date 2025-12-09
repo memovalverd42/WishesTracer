@@ -1,7 +1,7 @@
-using Application.DTOs;
-using Application.Interfaces;
 using Infraestructure.Scraper;
 using Infraestructure.Scraper.Core;
+using WishesTracer.Application.DTOs;
+using WishesTracer.Application.Interfaces;
 
 namespace Infraestructure.Services;
 

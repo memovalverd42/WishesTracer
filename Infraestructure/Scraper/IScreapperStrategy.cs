@@ -1,4 +1,4 @@
-using Application.DTOs;
+using WishesTracer.Application.DTOs;
 
 namespace Infraestructure.Scraper;
 

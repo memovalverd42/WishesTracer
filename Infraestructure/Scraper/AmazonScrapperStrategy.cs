@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text.Json.Nodes;
-using Application.DTOs;
 using HtmlAgilityPack;
+using WishesTracer.Application.DTOs;
 
 namespace Infraestructure.Scraper;
 

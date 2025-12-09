@@ -1,6 +1,6 @@
-using Domain.Entities;
+using WishesTracer.Domain.Entities;
 
-namespace Domain.Interfaces;
+namespace WishesTracer.Domain.Interfaces;
 
 public interface IProductRepository
 {

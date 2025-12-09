@@ -1,0 +1,13 @@
+﻿services:
+  wishestracer:
+    image: wishestracer
+    build:
+      context: .
+      dockerfile: WishesTracer/Dockerfile
+
+  domain:
+    image: domain
+    build:
+      context: .
+      dockerfile: Domain/Dockerfile
+

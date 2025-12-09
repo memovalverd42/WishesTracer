@@ -1,9 +1,9 @@
-using Infraestructure.Scraper;
-using Infraestructure.Scraper.Core;
 using WishesTracer.Application.DTOs;
 using WishesTracer.Application.Interfaces;
+using WishesTracer.Infraestructure.Scraper;
+using WishesTracer.Infraestructure.Scraper.Core;
 
-namespace Infraestructure.Services;
+namespace WishesTracer.Infraestructure.Services;
 
 
 public class ScraperService : IScraperService

@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 using HtmlAgilityPack;
 using WishesTracer.Application.DTOs;
 
-namespace Infraestructure.Scraper;
+namespace WishesTracer.Infraestructure.Scraper;
 
 public class AmazonStrategy : IScraperStrategy
 {

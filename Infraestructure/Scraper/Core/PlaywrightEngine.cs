@@ -1,6 +1,6 @@
 using Microsoft.Playwright;
 
-namespace Infraestructure.Scraper.Core;
+namespace WishesTracer.Infraestructure.Scraper.Core;
 
 public class PlaywrightEngine : IAsyncDisposable
 {

@@ -1,4 +1,4 @@
-namespace Infraestructure.Scraper;
+namespace WishesTracer.Infraestructure.Scraper;
 
 public class ScraperFactory
 {

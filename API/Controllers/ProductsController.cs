@@ -25,6 +25,6 @@ namespace WishesTracer.Controllers
 
             return Ok(result);
         }
-
+        
     }
 }

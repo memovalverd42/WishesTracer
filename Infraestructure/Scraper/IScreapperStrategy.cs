@@ -1,6 +1,6 @@
 using WishesTracer.Application.DTOs;
 
-namespace Infraestructure.Scraper;
+namespace WishesTracer.Infraestructure.Scraper;
 
 public interface IScraperStrategy
 {

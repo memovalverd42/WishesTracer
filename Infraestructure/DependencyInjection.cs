@@ -1,13 +1,13 @@
 using WishesTracer.Infraestructure.Persistence;
-using Infraestructure.Scraper;
-using Infraestructure.Scraper.Core;
-using Infraestructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WishesTracer.Application.Interfaces;
 using WishesTracer.Domain.Interfaces;
 using WishesTracer.Infraestructure.Persistence.Repositories;
+using WishesTracer.Infraestructure.Scraper;
+using WishesTracer.Infraestructure.Scraper.Core;
+using WishesTracer.Infraestructure.Services;
 
 namespace WishesTracer.Infraestructure;
 

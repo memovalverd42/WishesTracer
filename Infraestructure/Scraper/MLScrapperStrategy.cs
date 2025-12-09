@@ -2,7 +2,7 @@ using System.Globalization;
 using HtmlAgilityPack;
 using WishesTracer.Application.DTOs;
 
-namespace Infraestructure.Scraper;
+namespace WishesTracer.Infraestructure.Scraper;
 
 public class MercadoLibreStrategy : IScraperStrategy
 {

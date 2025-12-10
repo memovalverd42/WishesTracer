@@ -1,3 +1,6 @@
+using Hangfire;
+using Hangfire.PostgreSql;
+using Microsoft.AspNetCore.Builder;
 using WishesTracer.Infraestructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +28,8 @@ public static class DependencyInjection
 
         // 3. Scraping
         services.AddSingleton<PlaywrightEngine>(); // Motor pesado compartido
-        services.AddTransient<ScraperFactory>();   // Fábrica ligera
-        
+        services.AddTransient<ScraperFactory>(); // Fábrica ligera
+
         // Registramos las estrategias específicas
         services.AddTransient<IScraperStrategy, AmazonStrategy>();
         services.AddTransient<IScraperStrategy, MercadoLibreStrategy>();
@@ -34,6 +37,20 @@ public static class DependencyInjection
         // Registramos el servicio que usa la Application
         services.AddScoped<IScraperService, ScraperService>();
 
+        // Configuracion de hangfire
+        services.AddHangfire(config =>
+            config.UsePostgreSqlStorage(c =>
+                c.UseNpgsqlConnection(connectionString)));
+        services.AddHangfireServer();
+
         return services;
+    }
+    
+    
+    public static IApplicationBuilder UseHangfire(this IApplicationBuilder app)
+    {
+        app.UseHangfireDashboard();
+        
+        return app;
     }
 }

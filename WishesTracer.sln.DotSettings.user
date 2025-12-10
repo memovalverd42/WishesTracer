@@ -4,6 +4,14 @@
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::7EC23790-E656-4BD8-A34E-CDF4E5C07E95::net8.0::WishesTracer.ApplicationTests.Features.Products.Commands.CreateProduct.CreateProductHandlerTests&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::689EA493-55E0-4E57-B34E-96A1CD495757::net8.0::WishesTracer.DomainTests.Entities.ProductTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.MercadoLibreStrategyTests.CanHandle_WhenUrlIsFromMercadoLibre_ShouldReturnTrue&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.MercadoLibreStrategyTests.CanHandle_WhenUrlIsNotFromMercadoLibre_ShouldReturnFalse("https://www.amazon.com.mx/gp/product/B09SVCLB79")&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.MercadoLibreStrategyTests.ParseHtml_WhenProductIsAvailable_ShouldExtractAllDataCorrectly&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.MercadoLibreStrategyTests.ParseHtml_WhenHtmlIsEmpty_ShouldReturnDefaultDto&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.MercadoLibreStrategyTests.ParseHtml_WhenPriceIsNotFound_ShouldReturnPriceZero&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.MercadoLibreStrategyTests.ParseHtml_WhenTitleIsNotFound_ShouldReturnDefaultTitle&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.MercadoLibreStrategyTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A32A524A-E91A-4492-915C-E1215D524259::net8.0::WishesTracer.InfraestructureTests.Scraper.AmazonScraperStrategyTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

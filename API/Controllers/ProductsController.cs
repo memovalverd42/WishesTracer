@@ -6,7 +6,7 @@ using WishesTracer.Shared.Extensions;
 
 namespace WishesTracer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {

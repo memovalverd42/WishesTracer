@@ -42,4 +42,9 @@ public class ProductRepository : IProductRepository
         _dbSet.Update(product);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<Product?> ExistsWithUrlAsync(string url)
+    {
+        return await _dbSet.FirstOrDefaultAsync(p => p.Url == url && p.IsActive);
+    }
 }

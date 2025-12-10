@@ -54,14 +54,17 @@ public class CreateProductHandlerTests
         // --- ASSERT (Verificar resultados) ---
         
         // 1. Verificamos que el resultado no sea nulo y tenga los datos correctos
-        result.Should().NotBeNull();
-        result.Name.Should().Be("Test Product");
-        result.Price.Should().Be(1500.50m);
-        result.IsActive.Should().BeTrue();
+        var product = result.Value;
+        
+        product.Should().NotBeNull();
+        product.Name.Should().Be("Test Product");
+        product.Price.Should().Be(1500.50m);
+        product.IsActive.Should().BeTrue();
 
         // 2. VERIFICACIÓN CRÍTICA: ¿Se llamó a la base de datos?
         // Verificamos que el método AddAsync del repositorio se ejecutó exactamente 1 vez
         _repositoryMock.Verify(x => x.AddAsync(It.IsAny<Product>()), Times.Once);
+        _repositoryMock.Verify(x => x.ExistsWithUrlAsync(url), Times.Once);
         
         // 3. Verificamos que se llamó al scraper
         _scraperServiceMock.Verify(x => x.ScrapeProductAsync(url), Times.Once);

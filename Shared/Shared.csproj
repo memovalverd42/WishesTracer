@@ -7,4 +7,16 @@
         <RootNamespace>WishesTracer.Shared</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+        <HintPath>..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\8.0.17\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions">
+        <HintPath>..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\8.0.17\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Mvc.Core">
+        <HintPath>..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\8.0.17\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

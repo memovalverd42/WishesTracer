@@ -8,4 +8,5 @@ public interface IProductRepository
     Task<List<Product>> GetAllActiveAsync();
     Task AddAsync(Product product);
     Task UpdateAsync(Product product);
+    Task <Product?> ExistsWithUrlAsync(string url);
 }

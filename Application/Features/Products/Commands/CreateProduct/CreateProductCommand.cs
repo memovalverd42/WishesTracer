@@ -2,13 +2,15 @@ using MediatR;
 using WishesTracer.Application.DTOs;
 using WishesTracer.Application.Interfaces;
 using WishesTracer.Domain.Entities;
+using WishesTracer.Domain.Errors;
 using WishesTracer.Domain.Interfaces;
+using WishesTracer.Shared.Results;
 
 namespace WishesTracer.Application.Features.Products.Commands.CreateProduct;
 
-public record CreateProductCommand(string Url) : IRequest<ProductDto>;
+public record CreateProductCommand(string Url) : IRequest<Result<ProductDto>>;
 
-public class CreateProductHandler : IRequestHandler<CreateProductCommand, ProductDto>
+public class CreateProductHandler : IRequestHandler<CreateProductCommand, Result<ProductDto>>
 {
     private readonly IProductRepository _repository;
 
@@ -21,11 +23,28 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
         _scraperService = scraperService;
     }
 
-    public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ProductDto>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        // 1. Obtener datos actuales de la tienda (Amazon/ML)
+        // Validar la URL
+        if (!Uri.TryCreate(request.Url, UriKind.Absolute, out var _))
+            return ProductErrors.InvalidUrl;
+        
+        // Limpiar URL Dominio mas AbsolutePath (quitar todo el ruido de los query params)
+        var uri = new Uri(request.Url);
+        var cleanedUrl = "https://" + uri.Host + uri.AbsolutePath; 
+        
+        // Checar existencia de ese producto
+        var exists = await _repository.ExistsWithUrlAsync(cleanedUrl);
+        if (exists != null)
+            return ProductErrors.DuplicateUrl(cleanedUrl);
+        
+        // Obtener datos actuales de la tienda (Amazon/ML)
         // El servicio decide qué estrategia usar internamente
-        var scrapedData = await _scraperService.ScrapeProductAsync(request.Url);
+        var scrapedData = await _scraperService.ScrapeProductAsync(cleanedUrl);
+        
+        // Validar que hayamos podido conseguir el precio
+        if (scrapedData.Price <= 0)
+            return ProductErrors.InvalidPrice;
 
         // 2. Crear la entidad de Dominio
         var product = new Product(scrapedData.Title, scrapedData.Url, scrapedData.Vendor);

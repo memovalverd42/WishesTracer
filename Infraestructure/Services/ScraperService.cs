@@ -11,6 +11,8 @@ public class ScraperService : IScraperService
     private readonly ScraperFactory _factory;
     private readonly PlaywrightEngine _engine;
 
+    private static readonly SemaphoreSlim Semaphore = new(2, 2);
+
     public ScraperService(ScraperFactory factory, PlaywrightEngine engine)
     {
         _factory = factory;
@@ -19,19 +21,29 @@ public class ScraperService : IScraperService
 
     public async Task<ProductScrapedDto> ScrapeProductAsync(string url)
     {
-        // 1. Inicializar si es necesario (mejor hacerlo al inicio de la app)
-        await _engine.InitializeAsync();
+        // Turno
+        await Semaphore.WaitAsync();
 
-        // 2. Obtener estrategia
-        var strategy = _factory.GetStrategy(url);
+        try
+        {
+            // Retardo aleatorio
+            var randomDelay = Random.Shared.Next(2000, 5000);
+            await Task.Delay(randomDelay);
 
-        // 3. Obtener HTML
-        var html = await _engine.GetHtmlContentAsync(url);
-
-        if (string.IsNullOrEmpty(html))
-            throw new Exception("No se pudo obtener el HTML");
-
-        // 4. Parsear
-        return strategy.ParseHtml(html, url);
+            await _engine.InitializeAsync();
+            var strategy = _factory.GetStrategy(url);
+            
+            var html = await _engine.GetHtmlContentAsync(url);
+            
+            if (string.IsNullOrEmpty(html))
+                throw new Exception("HTML vacío");
+            
+            return strategy.ParseHtml(html, url);
+        }
+        finally
+        {
+            // Soltar el turno siempre, pase lo que pase
+            Semaphore.Release();
+        }
     }
 }

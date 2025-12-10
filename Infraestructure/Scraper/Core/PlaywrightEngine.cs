@@ -8,6 +8,8 @@ public class PlaywrightEngine : IAsyncDisposable
     private IBrowser _browser;
     private bool _isInitialized = false;
 
+    private readonly SemaphoreSlim _initLock = new(1, 1);
+
     // Configuración para parecer humano
     private const string UserAgent =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
@@ -16,36 +18,48 @@ public class PlaywrightEngine : IAsyncDisposable
     {
         if (_isInitialized) return;
 
-        _playwright = await Playwright.CreateAsync();
-
-        // Lanzamos el navegador UNA sola vez. 
-        // Headless = true para producción, false para ver qué hace mientras programas.
-        _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        await _initLock.WaitAsync();
+        try
         {
-            Headless = true, // Ponlo en false ahora para que veas la magia
-            Args =
-            [
-                "--disable-blink-features=AutomationControlled", // Evita detección de bot
-                "--disable-notifications", // Sin popups de notificaciones
-                "--disable-popup-blocking", // Paradójicamente ayuda a evitar popups de descarga
-                "--no-first-run", // Sin pantallas de bienvenida
-                "--no-default-browser-check", // Sin preguntas de navegador predeterminado
-                "--disable-extensions", // Sin extensiones
-                "--disable-infobars", // Sin barras de información
-                "--disable-dev-shm-usage", // Mejora rendimiento en Docker/Linux
-                "--disable-background-networking", // Menos tráfico de fondo
-                "--disable-features=TranslateUI", // Sin popups de traducción
-                "--disable-save-password-bubble" // Sin popups de guardar contraseña
-            ]
-        });
+            // Chequeo doble (Double-check locking pattern)
+            if (_isInitialized) return;
+            
+            _playwright = await Playwright.CreateAsync();
 
-        _isInitialized = true;
-        Console.WriteLine("Motor Playwright Iniciado (Browser levantado).");
+            // Lanzamiento del navegador UNA sola vez. 
+            _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            {
+                Headless = true, // Ponlo en false ahora para que veas la magia
+                Args =
+                [
+                    "--disable-blink-features=AutomationControlled", // Evita detección de bot
+                    "--disable-notifications", // Sin popups de notificaciones
+                    "--disable-popup-blocking", // Paradójicamente ayuda a evitar popups de descarga
+                    "--no-first-run", // Sin pantallas de bienvenida
+                    "--no-default-browser-check", // Sin preguntas de navegador predeterminado
+                    "--disable-extensions", // Sin extensiones
+                    "--disable-infobars", // Sin barras de información
+                    "--disable-dev-shm-usage", // Mejora rendimiento en Docker/Linux
+                    "--disable-background-networking", // Menos tráfico de fondo
+                    "--disable-features=TranslateUI", // Sin popups de traducción
+                    "--disable-save-password-bubble" // Sin popups de guardar contraseña
+                ]
+            });
+
+            _isInitialized = true;
+            Console.WriteLine("Motor Playwright Iniciado (Browser levantado).");
+        }
+        finally
+        {
+            _initLock.Release();
+        }
     }
 
     public async Task<string?> GetHtmlContentAsync(string url)
     {
-        if (!_isInitialized) await InitializeAsync();
+        await InitializeAsync();
+        
+        if (_browser == null) throw new InvalidOperationException("Browser no inicializado");
 
         // Creamos un contexto efímero (como una pestaña de incógnito aislada)
         // Esto es muy barato en memoria.
@@ -72,7 +86,7 @@ public class PlaywrightEngine : IAsyncDisposable
                 Body = ""
             });
         });
-        
+
         // Bloquear CSS con respuesta vacía
         await page.RouteAsync("**/*.css", async route =>
         {
@@ -83,9 +97,9 @@ public class PlaywrightEngine : IAsyncDisposable
                 Body = ""
             });
         });
-        
+
         // Bloquear analytics y tracking
-        await page.RouteAsync("**/*{google-analytics,googletagmanager,facebook,doubleclick,analytics}*", 
+        await page.RouteAsync("**/*{google-analytics,googletagmanager,facebook,doubleclick,analytics}*",
             async route => await route.AbortAsync());
 
         try

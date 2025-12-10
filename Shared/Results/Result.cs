@@ -45,7 +45,7 @@ public class Result<T> : Result
 
     // Implicit conversion from T to Result<T>
     public static implicit operator Result<T>(T value) => Success(value);
-
+    
     // Implicit conversion from Error to Result<T>
     public static implicit operator Result<T>(Error error) => Failure<T>(error);
 }

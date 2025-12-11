@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace WishesTracer.Shared.Results;
 
 public enum ErrorType
@@ -16,7 +18,8 @@ public sealed record Error
     public string Description { get; }
     public ErrorType Type { get; }
     public Dictionary<string, object>? Metadata { get; }
-
+    
+    [JsonConstructor]
     private Error(string code, string description, ErrorType type, Dictionary<string, object>? metadata = null)
     {
         Code = code;

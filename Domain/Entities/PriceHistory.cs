@@ -10,6 +10,11 @@ namespace WishesTracer.Domain.Entities;
 /// </remarks>
 public class PriceHistory
 {
+    public Guid Id { get; private set; }
+    public Guid ProductId { get; private set; }
+    public decimal Price { get; private set; }
+    public DateTime Timestamp { get; private set; }
+
     /// <summary>
     /// Parameterless constructor required by Entity Framework Core.
     /// </summary>

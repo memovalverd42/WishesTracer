@@ -1,9 +1,18 @@
+// ResultExtensions.cs - Extensions for converting Result to ASP.NET Core responses
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WishesTracer.Shared.Results;
 
 namespace WishesTracer.Shared.Extensions;
 
+/// <summary>
+/// Provides extension methods for converting Result objects to ASP.NET Core ActionResults.
+/// </summary>
+/// <remarks>
+/// These extensions bridge the Result pattern with ASP.NET Core's response system,
+/// automatically mapping errors to appropriate HTTP status codes and RFC 7807 Problem Details.
+/// Supports various response scenarios (OK, Created, NoContent) with proper error handling.
+/// </remarks>
 public static class ResultExtensions
 {
     /// <summary>

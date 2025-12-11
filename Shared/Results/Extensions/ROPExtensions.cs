@@ -1,5 +1,14 @@
+// ROPExtensions.cs - Railway-Oriented Programming extensions for Result
 namespace WishesTracer.Shared.Results.Extensions;
 
+/// <summary>
+/// Provides functional programming extensions for Result objects.
+/// </summary>
+/// <remarks>
+/// Implements Railway-Oriented Programming (ROP) patterns for composing operations
+/// that return Result. Enables functional error handling with methods like Map, Bind,
+/// Match, Tap, and Ensure. Includes both synchronous and asynchronous versions.
+/// </remarks>
 public static class ResultExtensions
 {
     // Map: Transform success value

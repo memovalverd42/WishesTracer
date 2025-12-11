@@ -14,8 +14,6 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Configuración Fluent API
-        
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -26,6 +24,9 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<PriceHistory>(entity =>
         {
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever();
+            
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Price).HasPrecision(18, 2);
             

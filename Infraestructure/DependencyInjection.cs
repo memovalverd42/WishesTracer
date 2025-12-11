@@ -22,6 +22,13 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
+        
+        // Configuración de REDIS (Implementación de IDistributedCache)
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis");
+            options.InstanceName = "WishesTracer_"; 
+        });
 
         // 2. Repositorios
         services.AddScoped<IProductRepository, ProductRepository>();

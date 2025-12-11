@@ -9,4 +9,6 @@ public interface IProductRepository
     Task AddAsync(Product product);
     Task UpdateAsync(Product product);
     Task <Product?> ExistsWithUrlAsync(string url);
+    Task<List<Guid>> GetActiveProductIdsAsync();
+    Task SaveChangesAsync();
 }

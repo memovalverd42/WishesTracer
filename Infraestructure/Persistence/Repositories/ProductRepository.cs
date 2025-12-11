@@ -28,6 +28,7 @@ public class ProductRepository : IProductRepository
         return await _dbSet
             .Include(p => p.PriceHistory)
             .Where(p => p.IsActive)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -46,5 +47,18 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> ExistsWithUrlAsync(string url)
     {
         return await _dbSet.FirstOrDefaultAsync(p => p.Url == url && p.IsActive);
+    }
+
+    public async Task<List<Guid>> GetActiveProductIdsAsync()
+    {
+        return await _context.Products
+            .Where(p => p.IsActive)
+            .Select(p => p.Id)
+            .ToListAsync();
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }

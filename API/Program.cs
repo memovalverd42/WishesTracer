@@ -2,6 +2,7 @@ using Hangfire;
 using MediatR;
 using Serilog;
 using Serilog.Events;
+using System.Reflection;
 using WishesTracer.Application;
 using WishesTracer.Application.Features.Products.Commands.CheckProductPrices;
 using WishesTracer.Extensions;
@@ -26,7 +27,12 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 

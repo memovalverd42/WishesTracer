@@ -32,6 +32,29 @@ public class ProductRepository : IProductRepository
             .ToListAsync();
     }
 
+    public async Task<(List<Product> Products, int TotalCount)> GetPagedAsync(int page, int pageSize, string? searchTerm)
+    {
+        var query = _dbSet
+            .Where(p => p.IsActive)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            query = query.Where(p => p.Name.Contains(searchTerm) || p.Url.Contains(searchTerm));
+        }
+
+        var totalCount = await query.CountAsync();
+
+        var products = await query
+            .OrderByDescending(p => p.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return (products, totalCount);
+    }
+
     public async Task AddAsync(Product product)
     {
         await _dbSet.AddAsync(product);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WishesTracer.Application.DTOs;
 using WishesTracer.Application.Features.Products.Commands.CreateProduct;
 using WishesTracer.Application.Features.Products.Queries;
+using WishesTracer.Shared.DTOs;
 using WishesTracer.Shared.Extensions;
 
 namespace WishesTracer.Controllers
@@ -28,13 +29,22 @@ namespace WishesTracer.Controllers
             return result.ToValueOrProblemDetails();
         }
         
+        /// <summary>
+        /// Obtiene una lista paginada de productos activos
+        /// </summary>
+        /// <param name="page">Número de página (inicia en 1)</param>
+        /// <param name="pageSize">Cantidad de elementos por página (máximo 100)</param>
+        /// <param name="searchTerm">Término de búsqueda para filtrar por nombre o URL del producto</param>
+        /// <returns>Lista paginada de productos</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<ProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<ProductDto>>> GetProducts()
+        public async Task<ActionResult<PagedResult<ProductDto>>> GetProducts(
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 10, 
+            [FromQuery] string? searchTerm = null)
         {
-            var result = await _mediator.Send(new GetProductsQuery());
+            var result = await _mediator.Send(new GetProductsQuery(page, pageSize, searchTerm));
             return result.ToValueOrProblemDetails();
         }
 

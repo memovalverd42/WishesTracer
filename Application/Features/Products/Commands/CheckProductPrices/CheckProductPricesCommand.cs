@@ -1,3 +1,4 @@
+// CheckProductPricesCommand.cs - Command for automated price monitoring
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -9,14 +10,31 @@ using WishesTracer.Domain.Interfaces;
 
 namespace WishesTracer.Application.Features.Products.Commands.CheckProductPrices;
 
+/// <summary>
+/// Command that triggers a price check cycle for all active products.
+/// </summary>
+/// <remarks>
+/// This command is executed by Hangfire on a scheduled basis (hourly) to monitor
+/// product prices, detect changes, and publish price change events. It processes
+/// each active product independently to ensure resilience.
+/// </remarks>
 public record CheckProductPricesCommand : IRequest;
 
+/// <summary>
+/// Handles the CheckProductPricesCommand by orchestrating the price monitoring cycle.
+/// </summary>
 public class CheckProductPricesHandler : IRequestHandler<CheckProductPricesCommand>
 {
     private readonly ILogger<CheckProductPricesHandler> _logger;
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly IPublisher _publisher;
 
+    /// <summary>
+    /// Initializes a new instance of the CheckProductPricesHandler class.
+    /// </summary>
+    /// <param name="scopeFactory">Factory for creating scoped services per product</param>
+    /// <param name="publisher">MediatR publisher for domain events</param>
+    /// <param name="logger">Logger for monitoring and diagnostics</param>
     public CheckProductPricesHandler(
         IServiceScopeFactory scopeFactory,
         IPublisher publisher,
@@ -27,6 +45,11 @@ public class CheckProductPricesHandler : IRequestHandler<CheckProductPricesComma
         _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
     }
 
+    /// <summary>
+    /// Executes the price monitoring cycle for all active products.
+    /// </summary>
+    /// <param name="request">The command</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     public async Task Handle(CheckProductPricesCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("---- Iniciando ciclo de monitoreo de precios ---");
@@ -51,7 +74,8 @@ public class CheckProductPricesHandler : IRequestHandler<CheckProductPricesComma
         return await productRepository.GetActiveProductIdsAsync();
     }
 
-    private async Task ProcessProductsAsync(List<Guid> productIds, CancellationToken cancellationToken)
+    private async Task ProcessProductsAsync(List<Guid> productIds, 
+        CancellationToken cancellationToken)
     {
         foreach (var productId in productIds)
         {
@@ -59,7 +83,8 @@ public class CheckProductPricesHandler : IRequestHandler<CheckProductPricesComma
         }
     }
 
-    private async Task ProcessSingleProductAsync(Guid productId, CancellationToken cancellationToken)
+    private async Task ProcessSingleProductAsync(Guid productId, 
+        CancellationToken cancellationToken)
     {
         using var scope = _scopeFactory.CreateScope();
         var productRepository = scope.ServiceProvider.GetRequiredService<IProductRepository>();
@@ -122,7 +147,8 @@ public class CheckProductPricesHandler : IRequestHandler<CheckProductPricesComma
         return false;
     }
 
-    private async Task<ProductScrapedDto?> ScrapeProductDataAsync(IScraperService scraperService, Product product)
+    private async Task<ProductScrapedDto?> ScrapeProductDataAsync(IScraperService scraperService, 
+        Product product)
     {
         try
         {
@@ -161,7 +187,8 @@ public class CheckProductPricesHandler : IRequestHandler<CheckProductPricesComma
     {
         if (!HasPriceChanged(previousPrice, product.CurrentPrice))
         {
-            _logger.LogInformation("Producto revisado sin cambios: {ProductName}", product.Name);
+            _logger.LogInformation("Producto revisado sin cambios: {ProductName}", 
+                product.Name);
             return;
         }
 

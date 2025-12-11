@@ -25,6 +25,7 @@ public static class DependencyInjection
 
         // 2. Repositorios
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IPriceHistoryRepository, PriceHistoryRepository>();
 
         // 3. Scraping
         services.AddSingleton<PlaywrightEngine>(); // Motor pesado compartido

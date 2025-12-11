@@ -25,7 +25,6 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Result
 
     public async Task<Result<ProductDto>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        // Validar la URL
         if (!Uri.TryCreate(request.Url, UriKind.Absolute, out var _))
             return ProductErrors.InvalidUrl;
         
@@ -33,29 +32,22 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Result
         var uri = new Uri(request.Url);
         var cleanedUrl = "https://" + uri.Host + uri.AbsolutePath; 
         
-        // Checar existencia de ese producto
         var exists = await _repository.ExistsWithUrlAsync(cleanedUrl);
         if (exists != null)
             return ProductErrors.DuplicateUrl(cleanedUrl);
         
-        // Obtener datos actuales de la tienda (Amazon/ML)
-        // El servicio decide qué estrategia usar internamente
         var scrapedData = await _scraperService.ScrapeProductAsync(cleanedUrl);
         
-        // Validar que hayamos podido conseguir el precio
         if (scrapedData.Price <= 0)
             return ProductErrors.InvalidPrice;
 
-        // 2. Crear la entidad de Dominio
         var product = new Product(scrapedData.Title, scrapedData.Url, scrapedData.Vendor);
 
         // 3. Establecer precio inicial (Lógica de dominio)
         product.UpdatePrice(scrapedData.Price, scrapedData.Currency, scrapedData.IsAvailable);
 
-        // 4. Guardar en Base de Datos
         await _repository.AddAsync(product);
 
-        // 5. Devolver DTO
         return new ProductDto(
             product.Id,
             product.Name,

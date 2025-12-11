@@ -39,5 +39,17 @@ namespace WishesTracer.Controllers
             return result.ToValueOrProblemDetails();
         }
         
+        // Listado de productos -> /api/products?page=1&pageSize=10&searchTerm=iphone
+        
+        // Detalle de un producto -> /api/products/{id}
+        
+        // Eliminar Producto -> /api/products/{id}
+        
+        // Pausar/Reactivar Monitoreo
+        // Ruta: /api/products/{id}/status
+        // Body: { "isActive": false }
+        
+        // /api/stats/dashboard
+        
     }
 }

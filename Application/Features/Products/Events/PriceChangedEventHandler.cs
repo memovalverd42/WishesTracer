@@ -21,9 +21,7 @@ public class PriceChangedEventHandler : INotificationHandler<PriceChangedEvent>
         var cacheKey = $"product-history:{notification.ProductId}";
 
         await _cache.RemoveAsync(cacheKey, cancellationToken);
-        
-        // TODO: Invalidar también el detalle del producto (cuando lo tenga XD)
-        // await _cache.RemoveAsync($"product-detail:{notification.ProductId}");
+        await _cache.RemoveAsync($"product-details:{notification.ProductId}", cancellationToken);
         
         // Lógica desacoplada: Aquí podrías mandar un correo, un WhatsApp o un WebSocket
         _logger.LogWarning(

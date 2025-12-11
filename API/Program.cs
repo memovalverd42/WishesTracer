@@ -1,11 +1,21 @@
 using Hangfire;
 using MediatR;
+using Serilog;
+using Serilog.Events;
 using WishesTracer.Application;
 using WishesTracer.Application.Features.Products.Commands.CheckProductPrices;
 using WishesTracer.Extensions;
 using WishesTracer.Infraestructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
 
 builder.Services.AddGlobalExceptionHandling();
 builder.Services.AddControllers();

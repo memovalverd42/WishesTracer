@@ -3,8 +3,7 @@ namespace WishesTracer.Infraestructure.Scraper;
 public class ScraperFactory
 {
     private readonly IEnumerable<IScraperStrategy> _strategies;
-
-    // Inyectamos TODAS las estrategias disponibles
+    
     public ScraperFactory(IEnumerable<IScraperStrategy> strategies)
     {
         _strategies = strategies;

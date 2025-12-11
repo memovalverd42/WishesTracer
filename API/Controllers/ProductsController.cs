@@ -38,12 +38,12 @@ namespace WishesTracer.Controllers
         /// <param name="id">The unique identifier of the product</param>
         /// <returns>Product details including current price and price history</returns>
         /// <response code="200">Product details retrieved successfully</response>
-        /// <response code="404">Product not found</response>
         /// <response code="400">Invalid product ID format</response>
+        /// <response code="404">Product not found</response>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ProductDetailsDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductDetailsDto>> GetProduct(Guid id)
         {
             var result = await _mediator.Send(new GetProductDetailsQuery(id));

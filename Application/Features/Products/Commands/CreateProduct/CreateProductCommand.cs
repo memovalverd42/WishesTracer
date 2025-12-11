@@ -44,10 +44,10 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Result
     /// <param name="request">The command containing the product URL</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created product on success, or validation/conflict errors</returns>
-    /// <exception cref="Infraestructure.Scraper.Exceptions.UnsupportedVendorException">
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.UnsupportedVendorException">
     /// Thrown when the URL's vendor is not supported
     /// </exception>
-    /// <exception cref="Infraestructure.Scraper.Exceptions.ScraperException">
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.ScraperException">
     /// Thrown when scraping fails
     /// </exception>
     public async Task<Result<ProductDto>> Handle(CreateProductCommand request, 

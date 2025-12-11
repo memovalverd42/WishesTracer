@@ -26,10 +26,10 @@ public interface IScraperStrategy
     /// <param name="html">The HTML content to parse</param>
     /// <param name="url">The source URL (for vendor identification)</param>
     /// <returns>Extracted product data including title, price, and availability</returns>
-    /// <exception cref="Exceptions.ScrapingException">
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.ScrapingException">
     /// Thrown when required elements cannot be found
     /// </exception>
-    /// <exception cref="Exceptions.PriceExtractionException">
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.PriceExtractionException">
     /// Thrown when price parsing fails
     /// </exception>
     ProductScrapedDto ParseHtml(string html, string url);

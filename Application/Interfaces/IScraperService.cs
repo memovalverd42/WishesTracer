@@ -17,10 +17,10 @@ public interface IScraperService
     /// </summary>
     /// <param name="url">The product URL to scrape</param>
     /// <returns>Scraped product data including title, price, and availability</returns>
-    /// <exception cref="Infraestructure.Scraper.Exceptions.UnsupportedVendorException">
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.UnsupportedVendorException">
     /// Thrown when the URL's vendor is not supported
     /// </exception>
-    /// <exception cref="Infraestructure.Scraper.Exceptions.ScraperException">
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.ScraperException">
     /// Thrown when scraping fails due to network or parsing issues
     /// </exception>
     Task<ProductScrapedDto> ScrapeProductAsync(string url);

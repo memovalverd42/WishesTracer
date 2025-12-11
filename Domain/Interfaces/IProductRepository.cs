@@ -52,7 +52,7 @@ public interface IProductRepository
     /// </summary>
     /// <param name="url">The URL to check</param>
     /// <returns>The existing product if found; otherwise, null</returns>
-    Task <Product?> ExistsWithUrlAsync(string url);
+    Task<Product?> ExistsWithUrlAsync(string url);
 
     /// <summary>
     /// Retrieves the IDs of all active products for monitoring.

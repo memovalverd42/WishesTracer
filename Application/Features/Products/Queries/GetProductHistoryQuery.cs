@@ -38,6 +38,4 @@ public class GetProductHistoryHandler : IRequestHandler<GetProductHistoryQuery, 
 
         return history.Select(h => new PriceHistoryDto(h.Price, h.Timestamp)).ToList();
     }
-
-
 }

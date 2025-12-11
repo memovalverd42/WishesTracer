@@ -27,6 +27,16 @@ namespace WishesTracer.Controllers
             var result = await _mediator.Send(new GetProductDetailsQuery(id));
             return result.ToValueOrProblemDetails();
         }
+        
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<List<ProductDto>>> GetProducts()
+        {
+            var result = await _mediator.Send(new GetProductsQuery());
+            return result.ToValueOrProblemDetails();
+        }
 
         [HttpPost]
         [ProducesResponseType(typeof(ProductDto), StatusCodes.Status201Created)]

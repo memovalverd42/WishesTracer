@@ -1,5 +1,14 @@
+// Product.cs - Core domain entity representing a tracked product
 namespace WishesTracer.Domain.Entities;
 
+/// <summary>
+/// Represents a product being tracked for price monitoring across various vendors.
+/// </summary>
+/// <remarks>
+/// This is a rich domain entity that encapsulates product information, pricing data,
+/// and state management. It maintains a price history and enforces business rules
+/// for price updates through domain methods.
+/// </remarks>
 public class Product
 {
     public Guid Id { get; private set; }
@@ -21,12 +30,19 @@ public class Product
     private readonly List<PriceHistory> _priceHistory = [];
     public IReadOnlyCollection<PriceHistory> PriceHistory => _priceHistory.AsReadOnly();
 
-    // Constructor vacío requerido por EF Core
+    /// <summary>
+    /// Parameterless constructor required by Entity Framework Core for entity materialization.
+    /// </summary>
     private Product()
     {
     }
 
-    // Constructor para crear uno nuevo
+    /// <summary>
+    /// Creates a new product instance with the specified information.
+    /// </summary>
+    /// <param name="name">The product name or title</param>
+    /// <param name="url">The URL where the product can be found</param>
+    /// <param name="vendor">The vendor or marketplace (e.g., Amazon, MercadoLibre)</param>
     public Product(string name, string url, string vendor)
     {
         Id = Guid.NewGuid();
@@ -37,7 +53,17 @@ public class Product
         IsActive = true;
     }
 
-    // Comportamiento del Dominio (La lógica "rica")
+    /// <summary>
+    /// Updates the product's current price and availability status.
+    /// Automatically records price changes in the history collection.
+    /// </summary>
+    /// <param name="newPrice">The new price value</param>
+    /// <param name="currency">The currency code (e.g., MXN, USD)</param>
+    /// <param name="isAvailable">Whether the product is currently available for purchase</param>
+    /// <remarks>
+    /// If the price has changed and is greater than zero, a new entry is added to the 
+    /// price history before updating the current price.
+    /// </remarks>
     public void UpdatePrice(decimal newPrice, string currency, bool isAvailable)
     {
         // Si el precio cambió, agregamos al historial

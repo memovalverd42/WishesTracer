@@ -1,3 +1,4 @@
+// CreateProductCommand.cs - Command for creating a new tracked product
 using MediatR;
 using WishesTracer.Application.DTOs;
 using WishesTracer.Application.Interfaces;
@@ -8,22 +9,49 @@ using WishesTracer.Shared.Results;
 
 namespace WishesTracer.Application.Features.Products.Commands.CreateProduct;
 
+/// <summary>
+/// Command for creating a new product to track for price monitoring.
+/// </summary>
+/// <param name="Url">The URL of the product to track</param>
+/// <remarks>
+/// The URL will be cleaned (removing query parameters) and validated before creating
+/// the product. The system will scrape initial product data from the vendor's website.
+/// </remarks>
 public record CreateProductCommand(string Url) : IRequest<Result<ProductDto>>;
 
+/// <summary>
+/// Handles the CreateProductCommand by scraping product data and persisting it.
+/// </summary>
 public class CreateProductHandler : IRequestHandler<CreateProductCommand, Result<ProductDto>>
 {
     private readonly IProductRepository _repository;
-
-    // Aquí está el truco: Inyectamos interfaces, no implementaciones concretas
     private readonly IScraperService _scraperService;
 
+    /// <summary>
+    /// Initializes a new instance of the CreateProductHandler class.
+    /// </summary>
+    /// <param name="repository">The product repository</param>
+    /// <param name="scraperService">The scraper service for fetching product data</param>
     public CreateProductHandler(IProductRepository repository, IScraperService scraperService)
     {
         _repository = repository;
         _scraperService = scraperService;
     }
 
-    public async Task<Result<ProductDto>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    /// <summary>
+    /// Handles the command execution, validates URL, scrapes data, and creates product.
+    /// </summary>
+    /// <param name="request">The command containing the product URL</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The created product on success, or validation/conflict errors</returns>
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.UnsupportedVendorException">
+    /// Thrown when the URL's vendor is not supported
+    /// </exception>
+    /// <exception cref="WishesTracer.Infraestructure.Scraper.Exceptions.ScraperException">
+    /// Thrown when scraping fails
+    /// </exception>
+    public async Task<Result<ProductDto>> Handle(CreateProductCommand request, 
+        CancellationToken cancellationToken)
     {
         if (!Uri.TryCreate(request.Url, UriKind.Absolute, out var _))
             return ProductErrors.InvalidUrl;
